@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/colors.dart';
+import 'package:todo_app/widgets/todo_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,13 +27,14 @@ class HomePage extends StatelessWidget {
                       bottom: 20,
                     ),
                     child: Text(
-                      'All ToDo',
+                      'All ToDos',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  )
+                  ),
+                  TodoItem(),
                 ],
               ),
             )
