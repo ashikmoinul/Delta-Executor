@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/colors.dart';
+import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+
+  final todosList = ToDo.todoList();
+
+   HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,8 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  TodoItem(),
+                  for(ToDo todoo in todosList)
+                  TodoItem(toDo: todoo,),
                 ],
               ),
             )
