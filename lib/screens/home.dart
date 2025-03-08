@@ -4,47 +4,98 @@ import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
 class HomePage extends StatelessWidget {
-
   final todosList = ToDo.todoList();
 
-   HomePage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
-        child: Column(
-          children: [
-            searchBox(),
-            Expanded(
-              child: ListView(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 50,
-                      bottom: 20,
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+            child: Column(
+              children: [
+                searchBox(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 50,
+                          bottom: 20,
+                        ),
+                        child: Text(
+                          'All ToDos',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      for (ToDo todoo in todosList)
+                        TodoItem(
+                          toDo: todoo,
+                        ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    margin: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text(
-                      'All ToDos',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Add a new todo item',
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
-                  for(ToDo todoo in todosList)
-                  TodoItem(toDo: todoo,),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 20),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      '+', style: TextStyle(fontSize: 30),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: tdBlue,
+                      foregroundColor: Colors.white,
+                      elevation: 5,
+                      minimumSize: Size(60, 60)
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
