@@ -3,10 +3,15 @@ import 'package:todo_app/components/colors.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
-class HomePage extends StatelessWidget {
-  final todosList = ToDo.todoList();
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  HomePage({super.key});
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final todosList = ToDo.todoList();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +47,8 @@ class HomePage extends StatelessWidget {
                       for (ToDo todoo in todosList)
                         TodoItem(
                           toDo: todoo,
+                          onToDoChanged: _handleTodoChanged,
+                          onDeleteItem: _deleteTodoItem,
                         ),
                     ],
                   ),
@@ -82,14 +89,14 @@ class HomePage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     child: Text(
-                      '+', style: TextStyle(fontSize: 30),
+                      '+',
+                      style: TextStyle(fontSize: 30),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: tdBlue,
-                      foregroundColor: Colors.white,
-                      elevation: 5,
-                      minimumSize: Size(60, 60)
-                    ),
+                        backgroundColor: tdBlue,
+                        foregroundColor: Colors.white,
+                        elevation: 5,
+                        minimumSize: Size(60, 60)),
                   ),
                 )
               ],
@@ -98,6 +105,18 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _handleTodoChanged(ToDo todo) {
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+  }
+
+  void _deleteTodoItem(String id) {
+    setState(() {
+      todosList.removeWhere((item) => item.id == id);
+    });
   }
 
   AppBar _buildAppBar() {
