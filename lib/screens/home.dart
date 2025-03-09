@@ -13,6 +13,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final todosList = ToDo.todoList();
   final _todoController = TextEditingController();
+  List<ToDo> _foundToDo = [];
+
+  @override
+  void initState() {
+    _foundToDo = todosList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      for (ToDo todoo in todosList)
+                      for (ToDo todoo in _foundToDo.reversed)
                         TodoItem(
                           toDo: todoo,
                           onToDoChanged: _handleTodoChanged,
@@ -132,6 +139,50 @@ class _HomePageState extends State<HomePage> {
     _todoController.clear();
   }
 
+  void _runFilter(String enteredKeyword) {
+    List<ToDo> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = todosList;
+    } else {
+      results = todosList
+          .where((item) => item.todoText!
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      _foundToDo = results;
+    });
+  }
+
+  Widget searchBox() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        onChanged: (value) => _runFilter(value),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
+          prefixIcon: Icon(
+            Icons.search,
+            color: tdBlack,
+            size: 20,
+          ),
+          prefixIconConstraints: BoxConstraints(
+            maxHeight: 20,
+            maxWidth: 20,
+          ),
+          border: InputBorder.none,
+          hintText: 'Search',
+          hintStyle: TextStyle(color: tdGrey),
+        ),
+      ),
+    );
+  }
+
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: tdBGColor,
@@ -159,31 +210,4 @@ class _HomePageState extends State<HomePage> {
       // centerTitle: true,
     );
   }
-}
-
-Widget searchBox() {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 15),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: TextField(
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(0),
-        prefixIcon: Icon(
-          Icons.search,
-          color: tdBlack,
-          size: 20,
-        ),
-        prefixIconConstraints: BoxConstraints(
-          maxHeight: 20,
-          maxWidth: 20,
-        ),
-        border: InputBorder.none,
-        hintText: 'Search',
-        hintStyle: TextStyle(color: tdGrey),
-      ),
-    ),
-  );
 }
